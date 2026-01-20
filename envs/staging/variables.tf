@@ -29,3 +29,18 @@ variable "tags" {
   type    = map(string)
   default = {}
 }
+variable "asp_name" {
+  description = "App Service Plan name"
+  type        = string
+}
+
+variable "asp_sku_name" {
+  description = "App Service Plan SKU"
+  type        = string
+  default     = "S1"
+}
+
+variable "webapp_name" {
+  description = "Web App name"
+  type        = string
+}

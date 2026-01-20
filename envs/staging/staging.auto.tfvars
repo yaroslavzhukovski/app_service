@@ -21,3 +21,6 @@ tags = {
   owner   = "yaroslav"
   project = "app_service"
 }
+asp_name     = "asp-appsvc-stg-swc-001"
+asp_sku_name = "S1"
+webapp_name  = "app-appsvc-stg-swc-001"
