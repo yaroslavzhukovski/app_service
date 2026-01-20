@@ -23,3 +23,27 @@ variable "tags" {
     managedBy = "terraform"
   }
 }
+variable "vnet_address_spaces" {
+  type        = list(string)
+  description = "Address spaces for the Virtual Network"
+
+
+}
+variable "vnet_subnets" {
+  type = map(object({
+    name             = string
+    address_prefixes = list(string)
+  }))
+  description = "Map of subnets"
+
+}
+variable "vnet_name" {
+  type        = string
+  description = "Virtual Network Name"
+
+}
+variable "rg_name" {
+  type        = string
+  description = "Resource Group Name"
+
+}
