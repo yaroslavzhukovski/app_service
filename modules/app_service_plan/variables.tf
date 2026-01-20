@@ -20,3 +20,8 @@ variable "tags" {
   type    = map(string)
   default = {}
 }
+variable "zone_balancing_enabled" {
+  description = "Enable zone redundancy/zone balancing (requires supported SKUs)"
+  type        = bool
+  default     = false
+}

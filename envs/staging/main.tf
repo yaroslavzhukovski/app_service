@@ -22,8 +22,9 @@ module "app_service_plan" {
   location            = var.location
   resource_group_name = azurerm_resource_group.this.name
 
-  sku_name = var.asp_sku_name
-  tags     = var.tags
+  sku_name               = var.asp_sku_name
+  tags                   = var.tags
+  zone_balancing_enabled = false
 }
 
 module "app_service" {
