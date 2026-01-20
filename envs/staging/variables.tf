@@ -1,49 +1,31 @@
 variable "location" {
   type        = string
-  description = "Azure region"
-  default     = "swedencentral"
+  description = "Azure region."
 }
 
-variable "env" {
+variable "rg_name" {
   type        = string
-  description = "Environment name"
-  default     = "staging"
+  description = "Resource group name."
 }
 
-variable "name_prefix" {
+variable "vnet_name" {
   type        = string
-  description = "Naming prefix"
-  default     = "acme-demo"
+  description = "VNet name."
 }
 
-variable "tags" {
-  type        = map(string)
-  description = "Common tags"
-  default = {
-    managedBy = "terraform"
-  }
+variable "vnet_address_space" {
+  type        = set(string)
+  description = "VNet CIDR(s)."
 }
-variable "vnet_address_spaces" {
-  type        = list(string)
-  description = "Address spaces for the Virtual Network"
 
-
-}
-variable "vnet_subnets" {
+variable "subnets" {
   type = map(object({
     name             = string
     address_prefixes = list(string)
   }))
-  description = "Map of subnets"
-
 }
-variable "vnet_name" {
-  type        = string
-  description = "Virtual Network Name"
 
-}
-variable "rg_name" {
-  type        = string
-  description = "Resource Group Name"
-
+variable "tags" {
+  type    = map(string)
+  default = {}
 }

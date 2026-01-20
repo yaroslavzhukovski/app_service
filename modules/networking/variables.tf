@@ -1,30 +1,33 @@
 variable "location" {
   type        = string
-  description = "Azure region"
+  description = "Azure region, e.g. swedencentral"
 }
+
 variable "resource_group_id" {
   type        = string
-  description = "Resource Group ID"
-
+  description = "Resource Group ID where the VNet will be deployed (parent_id for AVM module)."
 }
-variable "name" {
+
+variable "vnet_name" {
   type        = string
-  description = "Virtual Network Name"
-
+  description = "Name of the VNet."
 }
-variable "address_spaces" {
-  type        = list(string)
-  description = "Address spaces for the Virtual Network"
 
+variable "address_space" {
+  type        = set(string)
+  description = "VNet address space(s). Example: [\"10.40.0.0/16\"]."
 }
+
 variable "subnets" {
+  description = "Map of subnets to create."
   type = map(object({
     name             = string
     address_prefixes = list(string)
   }))
-  description = "Map of subnets"
 }
+
 variable "tags" {
   type        = map(string)
-  description = "Tags for the Virtual Network"
+  description = "Common tags."
+  default     = {}
 }

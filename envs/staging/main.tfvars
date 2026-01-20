@@ -5,7 +5,7 @@ vnet_name = "vnet-appsvc-stg-swc-001"
 
 vnet_address_space = ["10.40.0.0/16"]
 
-vnet_subnets = {
+subnets = {
   appgw = {
     name             = "snet-appgw"
     address_prefixes = ["10.40.0.0/24"]
