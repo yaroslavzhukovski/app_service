@@ -39,9 +39,10 @@ module "app_service" {
     WEBSITE_RUN_FROM_PACKAGE = "1"
   }
 
-  web_app_slots = {
+  deployment_slots = {
     staging = {
       name = "staging"
+
       app_settings = {
         ENVIRONMENT = "staging"
       }

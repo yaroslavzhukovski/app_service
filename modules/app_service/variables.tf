@@ -24,7 +24,7 @@ variable "app_settings" {
   default     = {}
 }
 
-variable "web_app_slots" {
+variable "deployment_slots" {
   description = "Deployment slots configuration"
   type        = any
   default     = {}
