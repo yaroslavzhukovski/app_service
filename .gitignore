@@ -1,0 +1,27 @@
+####################################
+# Terraform
+####################################
+**/.terraform/*
+**/*.tfstate
+**/*.tfstate.*
+**/crash.log
+**/crash.*.log
+
+# Ignore tfvars by default (may contain secrets)
+**/*.tfvars
+
+# BUT allow auto.tfvars (env config, no secrets)
+!**/*.auto.tfvars
+
+####################################
+# OS / IDE
+####################################
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+####################################
+# Logs
+####################################
+*.log
