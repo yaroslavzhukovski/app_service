@@ -1,6 +1,6 @@
 module "vnet" {
   source  = "Azure/avm-res-network-virtualnetwork/azurerm"
-  version = "0.7.0" # pin version for stability (important in real projects)
+  version = "0.17.0" # pin version for stability (important in real projects)
 
   name      = var.vnet_name
   location  = var.location
