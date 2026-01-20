@@ -1,0 +1,7 @@
+{
+  "name": "github-pr",
+  "issuer": "https://token.actions.githubusercontent.com",
+  "subject": "repo:yaroslavzhukovski/app_service:pull_request",
+  "description": "OIDC for GitHub Actions pull_request",
+  "audiences": ["api://AzureADTokenExchange"]
+}
