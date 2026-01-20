@@ -19,11 +19,25 @@ variable "vnet_address_space" {
 }
 
 variable "subnets" {
+  description = "Map of subnets to create."
   type = map(object({
     name             = string
     address_prefixes = list(string)
+
+    # Optional: subnet delegation 
+    delegation = optional(object({
+      name = string
+      service_delegation = object({
+        name    = string
+        actions = optional(list(string))
+      })
+    }))
+
+    # Optional: required for Private Endpoints subnet
+    private_endpoint_network_policies_enabled = optional(bool)
   }))
 }
+
 
 variable "tags" {
   type    = map(string)
@@ -43,4 +57,14 @@ variable "asp_sku_name" {
 variable "webapp_name" {
   description = "Web App name"
   type        = string
+}
+variable "storage_name" {
+  description = "Storage account name."
+  type        = string
+}
+
+variable "storage_container_name" {
+  description = "Blob container name."
+  type        = string
+  default     = "appdata"
 }

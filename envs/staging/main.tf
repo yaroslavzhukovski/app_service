@@ -34,11 +34,14 @@ module "app_service" {
   location            = var.location
   resource_group_name = azurerm_resource_group.this.name
 
-  service_plan_id = module.app_service_plan.id
+  service_plan_id            = module.app_service_plan.id
+  enable_vnet_integration    = true
+  vnet_integration_subnet_id = module.networking.subnet_ids["appsvc_int"]
 
   app_settings = {
     WEBSITE_RUN_FROM_PACKAGE = "1"
   }
+
 
   deployment_slots = {
     staging = {
@@ -49,6 +52,25 @@ module "app_service" {
       }
     }
   }
+
+  tags = var.tags
+}
+module "storage" {
+  source = "../../modules/storage"
+
+  name                = var.storage_name
+  container_name      = var.storage_container_name
+  location            = var.location
+  resource_group_name = azurerm_resource_group.this.name
+
+  # PE subnet
+  private_endpoint_subnet_id = module.networking.subnet_ids["pe"]
+
+  # Private DNS link
+  vnet_id = module.networking.vnet_id
+
+  # RBAC principal
+  web_app_principal_id = module.app_service.principal_id
 
   tags = var.tags
 }

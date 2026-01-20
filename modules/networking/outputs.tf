@@ -3,8 +3,10 @@ output "vnet_id" {
 }
 
 output "subnet_ids" {
-  value = { for k, s in module.vnet.subnets : k => s.resource_id }
+  description = "Subnet resource IDs keyed by subnet map key."
+  value       = { for k, s in module.vnet.subnets : k => s.resource_id }
 }
+
 
 output "subnet_names" {
   value = { for k, s in module.vnet.subnets : k => s.name }

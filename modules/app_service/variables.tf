@@ -35,3 +35,13 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+variable "vnet_integration_subnet_id" {
+  description = "Subnet resource ID for App Service VNet Integration (delegated subnet)."
+  type        = string
+  default     = null
+}
+variable "enable_vnet_integration" {
+  description = "Enable App Service VNet Integration (swift connection)."
+  type        = bool
+  default     = false
+}
