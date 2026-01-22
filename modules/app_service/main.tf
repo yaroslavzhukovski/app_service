@@ -15,7 +15,7 @@ module "site" {
   managed_identities = {
     system_assigned = true
   }
-
+  site_config  = var.site_config
   app_settings = var.app_settings
 
   # Deployment slots (AVM-native)
@@ -23,3 +23,13 @@ module "site" {
 
   tags = var.tags
 }
+
+# Outbound VNet Integration (optional)
+resource "azurerm_app_service_virtual_network_swift_connection" "this" {
+  count = var.enable_vnet_integration ? 1 : 0
+
+  app_service_id = module.site.resource_id
+  subnet_id      = var.vnet_integration_subnet_id
+}
+
+

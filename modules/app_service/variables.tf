@@ -35,3 +35,23 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+variable "vnet_integration_subnet_id" {
+  description = "Subnet resource ID for App Service VNet Integration (delegated subnet)."
+  type        = string
+  default     = null
+}
+variable "enable_vnet_integration" {
+  description = "Enable App Service VNet Integration (swift connection)."
+  type        = bool
+  default     = false
+
+  validation {
+    condition     = var.enable_vnet_integration == false || (var.vnet_integration_subnet_id != null && length(var.vnet_integration_subnet_id) > 0)
+    error_message = "When enable_vnet_integration is true, vnet_integration_subnet_id must be provided and non-empty."
+  }
+}
+variable "site_config" {
+  description = "site_config object passed to AVM web app module"
+  type        = any
+  default     = {}
+}
