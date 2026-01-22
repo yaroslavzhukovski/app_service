@@ -25,9 +25,19 @@ variable "subnets" {
     address_prefixes = list(string)
   }))
 }
+variable "resource_group_name" {
+  type        = string
+  description = "Resource Group name where the VNet will be deployed."
 
+}
 variable "tags" {
   type        = map(string)
   description = "Common tags."
   default     = {}
 }
+variable "enable_private_dns_blob" {
+  description = "Create and link privatelink.blob.core.windows.net Private DNS zone."
+  type        = bool
+  default     = true
+}
+

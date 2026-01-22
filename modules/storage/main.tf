@@ -22,21 +22,6 @@ resource "azurerm_storage_container" "this" {
   container_access_type = "private"
 }
 
-resource "azurerm_private_dns_zone" "blob" {
-  name                = "privatelink.blob.core.windows.net"
-  resource_group_name = var.resource_group_name
-
-  tags = var.tags
-}
-
-resource "azurerm_private_dns_zone_virtual_network_link" "blob" {
-  name                  = "${var.name}-blob-vnetlink"
-  resource_group_name   = var.resource_group_name
-  private_dns_zone_name = azurerm_private_dns_zone.blob.name
-  virtual_network_id    = var.vnet_id
-
-  tags = var.tags
-}
 
 resource "azurerm_private_endpoint" "blob" {
   name                = "${var.name}-pe-blob"
@@ -54,7 +39,7 @@ resource "azurerm_private_endpoint" "blob" {
   # Private DNS integration for the PE
   private_dns_zone_group {
     name                 = "default"
-    private_dns_zone_ids = [azurerm_private_dns_zone.blob.id]
+    private_dns_zone_ids = [var.private_dns_zone_id]
   }
 
   tags = var.tags

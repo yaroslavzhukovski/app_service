@@ -16,18 +16,6 @@ subnets = {
     address_prefixes = ["10.40.1.0/24"]
   }
 
-  appsvc_int = {
-    name             = "snet-appsvc-int"
-    address_prefixes = ["10.40.2.0/24"]
-
-    delegation = {
-      name = "delegation-web"
-      service_delegation = {
-        name = "Microsoft.Web/serverFarms"
-      }
-    }
-  }
-
   pe = {
     name             = "snet-pe"
     address_prefixes = ["10.40.3.0/24"]

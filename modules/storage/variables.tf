@@ -30,6 +30,10 @@ variable "public_network_access_enabled" {
   type        = bool
   default     = true
 }
+variable "private_dns_zone_id" {
+  description = "Private DNS zone ID for privatelink.blob.core.windows.net."
+  type        = string
+}
 
 variable "private_endpoint_subnet_id" {
   description = "Subnet ID for private endpoints."

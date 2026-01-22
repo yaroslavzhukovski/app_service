@@ -25,13 +25,13 @@ variable "subnets" {
     address_prefixes = list(string)
 
     # Optional: subnet delegation 
-    delegation = optional(object({
+    delegations = optional(list(object({
       name = string
       service_delegation = object({
         name    = string
         actions = optional(list(string))
       })
-    }))
+    })))
 
     # Optional: required for Private Endpoints subnet
     private_endpoint_network_policies_enabled = optional(bool)
