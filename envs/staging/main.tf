@@ -43,7 +43,9 @@ module "app_service" {
     app_command_line = "gunicorn --bind 0.0.0.0:8000 app:app"
 
     application_stack = {
-      python_version = "3.11"
+      main = {
+        python_version = "3.11"
+      }
     }
   }
   app_settings = {
