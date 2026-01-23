@@ -55,3 +55,8 @@ variable "site_config" {
   type        = any
   default     = {}
 }
+variable "enable_application_insights" {
+  description = "If false, AVM will NOT create Application Insights. We will use an existing one via app settings."
+  type        = bool
+  default     = false
+}

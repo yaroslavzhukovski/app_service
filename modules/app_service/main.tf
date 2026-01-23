@@ -19,7 +19,9 @@ module "site" {
   app_settings = var.app_settings
 
   # Deployment slots (AVM-native)
-  deployment_slots = var.deployment_slots
+  deployment_slots            = var.deployment_slots
+  enable_application_insights = var.enable_application_insights
+
 
   tags = var.tags
 }

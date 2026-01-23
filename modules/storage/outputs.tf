@@ -17,3 +17,7 @@ output "private_endpoint_id" {
   description = "Private endpoint resource ID."
   value       = azurerm_private_endpoint.blob.id
 }
+output "blob_service_id" {
+  description = "Resource ID of the Blob service (for diagnostics categories StorageRead/Write/Delete)"
+  value       = "${azurerm_storage_account.this.id}/blobServices/default"
+}
