@@ -26,6 +26,7 @@ module "app_service_plan" {
   sku_name               = var.asp_sku_name
   tags                   = var.tags
   zone_balancing_enabled = false
+
 }
 
 module "app_service" {
@@ -58,6 +59,8 @@ module "app_service" {
     # Storage target for the app
     AZURE_STORAGE_ACCOUNT_NAME   = module.storage.storage_account_name
     AZURE_STORAGE_CONTAINER_NAME = module.storage.container_name
+
+    APPLICATIONINSIGHTS_CONNECTION_STRING = module.app_insights.connection_string
   }
 
 
@@ -95,4 +98,55 @@ module "storage" {
   public_network_access_enabled = false
 
   tags = var.tags
+}
+module "log_analytics_workspace" {
+  source = "../../modules/monitoring_law"
+
+  name                = "law-appsvc-stg-swc-001"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.this.name
+  tags                = var.tags
+
+  retention_in_days = 30
+}
+module "app_insights" {
+  source = "../../modules/monitoring_appinsight"
+
+  name                = "appi-appsvc-stg-swc-001"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.this.name
+  tags                = var.tags
+
+  log_analytics_workspace_id = module.log_analytics_workspace.resource_id
+}
+module "webapp_diagnostics" {
+  source = "../../modules/monitor_diagnostic_settings"
+
+  name                       = "diag-webapp"
+  target_resource_id         = module.app_service.resource_id
+  log_analytics_workspace_id = module.log_analytics_workspace.resource_id
+
+  log_categories = toset([
+    "AppServiceHTTPLogs",
+    "AppServiceConsoleLogs",
+    "AppServiceAuditLogs",
+    "AppServiceIPSecAuditLogs"
+  ])
+
+  metric_categories = toset(["AllMetrics"])
+}
+module "storage_blob_diagnostics" {
+  source = "../../modules/monitor_diagnostic_settings"
+
+  name                       = "diag-storage-blob"
+  target_resource_id         = module.storage.blob_service_id
+  log_analytics_workspace_id = module.log_analytics_workspace.resource_id
+
+  log_categories = toset([
+    "StorageRead",
+    "StorageWrite",
+    "StorageDelete"
+  ])
+
+  metric_categories = toset(["AllMetrics"])
 }
