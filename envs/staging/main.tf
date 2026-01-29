@@ -70,11 +70,17 @@ module "app_service" {
       name = "staging"
 
       app_settings = {
-        ENVIRONMENT = "staging"
+        ENVIRONMENT                    = "staging"
+        SCM_DO_BUILD_DURING_DEPLOYMENT = "true"
+        WEBSITES_PORT                  = "8000"
+
+      }
+      site_config = {
+        always_on        = true
+        app_command_line = "gunicorn --bind 0.0.0.0:8000 app:app"
       }
     }
   }
-
   tags = var.tags
 }
 module "storage" {
