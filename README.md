@@ -1,191 +1,107 @@
-Azure App Service — Production-like Reference Architecture
+# Azure App Service – Production-like Reference Architecture
 
-Terraform · Azure · App Service
+Terraform-based reference implementation of an Azure App Service platform designed with production practices in mind.
 
-Overview
+This repository demonstrates how to build a realistic web application setup with a focus on deployment safety, security, and operational visibility.
 
-This repository contains a production-oriented Azure App Service architecture, fully implemented with Terraform and organized around reusable modules.
+## What is this?
 
-The purpose of this project is not to showcase a minimal demo, but to demonstrate how a realistic, enterprise-style web application platform can be designed with a focus on reliability, security, and operational safety.
+A production-oriented Azure App Service setup where:
 
-All resources are deployed into a staging environment intentionally treated as production-like, allowing architecture, deployment flow, and platform behavior to be validated before applying the same patterns to a real production environment.
+- Infrastructure is fully managed with Terraform
+- Staging is treated as a production-like environment
+- Deployments are validated before promotion
+- Data access is private and secured by default
 
-Key Goals
+The repository intentionally contains only a staging environment, used as a reference for architecture and deployment flow.
 
-Zero-downtime deployments
+## Key characteristics
 
-Production / staging parity
+- Zero-downtime deployments using App Service slots
+- Production / staging parity
+- Public HTTPS access for the app, private access for data
+- No secrets in code (Managed Identity + RBAC)
+- Centralized logging and monitoring
+- Reusable Terraform modules
 
-Secure data access by default
+## Architecture overview
 
-Clear observability and diagnostics
+### Application
 
-Reproducible infrastructure through code
+- Azure App Service (Linux, Python)
+- Deployment slots: production and staging
+- Health checks and explicit startup command
+- System-assigned Managed Identity
+- VNet integration
 
-Architecture at a Glance
-Application Layer
+### Data
 
-Azure App Service (Linux, Python)
+- Azure Blob Storage
+- Public network access disabled
+- Private Endpoint + Private DNS
+- Access via Managed Identity
 
-Deployment slots:
+### Networking
 
-production
+- Virtual Network
+- Dedicated subnets for:
+  - App Service integration
+  - Private Endpoints
 
-staging
+### Observability
 
-Health checks and explicit startup configuration
+- Azure Monitor
+- Log Analytics Workspace
+- Application Insights
+- Diagnostic settings for App Service and Storage
 
-System-assigned Managed Identity
+## Deployment flow
 
-VNet integration
+1. Code is deployed to the staging slot
+2. Application is validated via health checks
+3. Slot swap promotes the release to production
+4. Rollback is possible by swapping slots back
 
-Data Layer
+This mirrors a real production release process.
 
-Azure Blob Storage
+## Terraform structure
 
-Public network access disabled
+- Infrastructure is split into reusable modules
+- Azure Verified Modules (AVM) are used as a base
+- Modules are wrapped to provide:
+  - consistent defaults
+  - a clear interface
+  - reuse across environments
 
-Access via Private Endpoint and Private DNS
+The root configuration assembles the platform rather than defining resources inline.
 
-Authentication via Managed Identity and RBAC (no secrets)
+## Why only staging?
 
-Networking
+- Staging acts as a reference implementation
+- Production environments are typically restricted and not public
+- The same modules and patterns can be reused for production with different inputs
 
-Virtual Network
+## What this project shows
 
-Dedicated subnets for:
+- How to structure Terraform for real Azure platforms
+- How to use App Service slots safely
+- How to combine public apps with private dependencies
+- How to avoid secrets using Managed Identity
+- How to design infrastructure for reliability and clarity
 
-App Service integration
-
-Private Endpoints
-
-Observability
-
-Log Analytics Workspace
-
-Application Insights
-
-Diagnostic settings for:
-
-App Service
-
-Storage services
-
-Architectural Principles
-Production-like Staging
-
-The staging environment is a full reference implementation, not a simplified test setup.
-
-It includes both a production slot and a staging slot to validate:
-
-real deployment behavior
-
-application startup characteristics
-
-slot swap mechanics
-
-rollback scenarios
-
-This ensures the same release process can be reused in production without redesign.
-
-Secure by Design
-
-The application is publicly accessible over HTTPS, as expected for most web services.
-
-All data access is private and restricted:
-
-storage is not reachable from the public internet
-
-traffic to dependent services stays inside Azure’s private network
-
-authentication relies on Managed Identity instead of credentials
-
-This significantly reduces the attack surface while keeping the application accessible to users.
-
-Deployment Safety
-
-Code is always deployed to the staging slot first
-
-Health checks and runtime validation are performed before promotion
-
-Slot swap is used as an atomic promotion mechanism
-
-Rollback is achieved by swapping slots back if needed
-
-This approach minimizes deployment risk and avoids downtime.
-
-Observability
-
-The platform provides clear visibility into runtime behavior:
-
-centralized logs and metrics via Azure Monitor
-
-application telemetry via Application Insights
-
-explicit diagnostic settings instead of defaults
-
-This makes failures easier to detect and investigate.
-
-Infrastructure Design
-
-The infrastructure is composed using Terraform modules.
-
-Azure Verified Modules (AVM) are used as a base and wrapped with an additional abstraction layer to:
-
-enforce consistent defaults
-
-reduce configuration noise
-
-expose a clear, stable interface
-
-support reuse across environments
-
-The root configuration assembles these modules into a coherent platform instead of defining individual resources inline.
-
-Environment Strategy
-
-Only the staging environment is implemented in this repository.
-
-This is intentional:
-
-staging serves as a reference implementation
-
-production environments are typically restricted and not published publicly
-
-the same modules and patterns can be reused for production with different inputs
-
-What This Project Demonstrates
-
-Real-world Terraform structuring for Azure platforms
-
-Safe deployment patterns using App Service slots
-
-Combining public application access with private data access
-
-Using Managed Identity instead of secrets
-
-Designing Terraform modules for clarity and reuse
-
-Treating staging as a production-grade environment
-
-Intended Audience
+## Audience
 
 This repository is intended for:
 
-Cloud and platform engineers
+- Cloud / Platform Engineers
+- DevOps Engineers
+- Architects reviewing Azure patterns
+- Recruiters looking at real infrastructure projects
 
-DevOps engineers
+This is not a tutorial, but a practical reference.
 
-Architects evaluating Azure App Service patterns
+## Notes
 
-Recruiters reviewing real infrastructure work
-
-It is not a tutorial, but a reference implementation reflecting common enterprise practices.
-
-Notes
-
-The focus is on infrastructure and platform behavior, not application code
-
-Some settings are simplified for clarity, but the architecture mirrors production use cases
-
-The project intentionally exposes real platform challenges encountered during deployment and runtime
+- Focus is on platform and infrastructure behavior
+- Application code is intentionally minimal
+- Real platform issues encountered during deployment are part of the learning goal
